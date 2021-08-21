@@ -1,16 +1,14 @@
-package org.selenium.pom.tests;
+package org.selenium;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.wdm.config.DriverManagerType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class MyFirstTestCase {
+public class MyFirstTestCaseInitialOne {
 
     @Test
     public void fillForm() throws InterruptedException {
