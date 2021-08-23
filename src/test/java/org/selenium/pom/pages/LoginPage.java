@@ -2,7 +2,9 @@ package org.selenium.pom.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.selenium.pom.base.BasePage;
+import org.selenium.pom.objects.UserLogin;
 
 public class LoginPage extends BasePage {
 
@@ -15,14 +17,20 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
-    public String getLoginPageTitle(){
-        return driver.findElement(getLoginPageTitle).getText();
+    public LoginPage load(){
+        load("/Login");
+        return this;
     }
 
-    public DashboardPage doLogin(){
-        driver.findElement(getLoginName).sendKeys("testitera");
-        driver.findElement(getLoginPassword).sendKeys("test123");
-        driver.findElement(submitLoginBtn).click();
+    public String getLoginPageTitle(){
+
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(getLoginPageTitle)).getText();
+    }
+
+    public DashboardPage doLogin(UserLogin userLogin){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getLoginName)).sendKeys(userLogin.getUserName());
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getLoginPassword)).sendKeys(userLogin.getPassword());
+        wait.until(ExpectedConditions.elementToBeClickable(submitLoginBtn)).click();
         return new DashboardPage(driver);
     }
 

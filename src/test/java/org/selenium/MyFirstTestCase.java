@@ -3,54 +3,58 @@ package org.selenium;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.selenium.pom.base.BaseTest;
+import org.selenium.pom.objects.CreateCustomer;
+import org.selenium.pom.objects.UserLogin;
 import org.selenium.pom.pages.CreateCustomerPage;
 import org.selenium.pom.pages.DashboardPage;
 import org.selenium.pom.pages.HomePage;
 import org.selenium.pom.pages.LoginPage;
+import org.selenium.pom.utils.JacksonUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MyFirstTestCase extends BaseTest {
 
     @Test
-    public void fillForm() throws InterruptedException {
+    public void fillForm() {
 
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(driver).load();
         Assert.assertEquals(homePage.getHomePageTitle(), "Test automation practice form");
         Assert.assertEquals(homePage.getFormTitle(), "Textarea practice");
         homePage.doFormSubmit("Name1","0909090909","test@email.com","pwdtest","testaddress");
-        Thread.sleep(3000);
 
     }
 
     @Test
-    public void loginUsingExistingUser() throws InterruptedException {
-
-        HomePage homePage = new HomePage(driver);
+    public void loginUsingExistingUser() throws IOException {
+        UserLogin userLogin = JacksonUtils.deserializeJson("myUserLogin.json",UserLogin.class);
+        HomePage homePage = new HomePage(driver).load();
         Assert.assertEquals(homePage.getHomePageTitle(), "Test automation practice form");
-        LoginPage loginPage = homePage.getLoginLink();
-        DashboardPage dashboardPage = loginPage.doLogin();
-        Thread.sleep(3000);
+        LoginPage loginPage = homePage.clickLoginLink();
+        DashboardPage dashboardPage = loginPage.doLogin(userLogin);
         Assert.assertEquals(dashboardPage.getDashBoardPageTitle(),"Welcome testitera");
     }
     @Test
-    public void loginUsingExistingUserAndCreateNewData() throws InterruptedException {
-        HomePage homePage = new HomePage(driver);
-        Assert.assertEquals(homePage.getHomePageTitle(), "Test automation practice form");
-        LoginPage loginPage = homePage.getLoginLink();
-        DashboardPage dashboardPage = loginPage.doLogin();
-        Thread.sleep(3000);
+    public void loginUsingExistingUserAndCreateNewData() throws IOException {
+        UserLogin userLogin = JacksonUtils.deserializeJson("myUserLogin.json",UserLogin.class);
+        CreateCustomer createCustomer = JacksonUtils.deserializeJson("myCreateCustomer.json",CreateCustomer.class);
+        DashboardPage dashboardPage = new LoginPage(driver).load().doLogin(userLogin);
         Assert.assertEquals(dashboardPage.getDashBoardPageTitle(),"Welcome testitera");
-        int result = dashboardPage.verifyCustomerCreate();
-        System.out.println("ROWS BEFORE CUSTOMER CREATION : "+dashboardPage.verifyCustomerCreate());
-        CreateCustomerPage createCustomerPage = dashboardPage.getCreateCustomerBtn();
+        CreateCustomerPage createCustomerPage = dashboardPage.clickCreateCustomerBtn();
         Assert.assertEquals(createCustomerPage.getCreateCustomerPageTitle(),"Create");
-        createCustomerPage.doCreateCustomer("NewName","NewCompany","NewAddress","NewCity","0909090909","test@test.com");
-        Thread.sleep(3000);
-        System.out.println("ROWS AFTER CUSTOMER CREATION : "+dashboardPage.verifyCustomerCreate());
-        Assert.assertTrue(result+1==dashboardPage.verifyCustomerCreate());
+        createCustomerPage.doCreateCustomerPojo(createCustomer);
         Assert.assertEquals(dashboardPage.getLatestCreateName(),"NewName");
 
+    }
+    @Test
+        public void loginUsingExistingUserDeleteAllRecords() throws IOException {
+        UserLogin userLogin = JacksonUtils.deserializeJson("myUserLogin.json",UserLogin.class);
+        DashboardPage dashboardPage = new LoginPage(driver).load().doLogin(userLogin);
+        Assert.assertEquals(dashboardPage.getDashBoardPageTitle(),"Welcome testitera");
+        dashboardPage.clickOnDeleteAllRecords();
     }
 }
 

@@ -8,7 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class MyFirstTestCaseInitialOne {
+public class MyInitialOneFirstTestCase {
 
     @Test
     public void fillForm() throws InterruptedException {

@@ -3,7 +3,9 @@ package org.selenium.pom.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.selenium.pom.base.BasePage;
+import org.selenium.pom.objects.CreateCustomer;
 
 public class CreateCustomerPage extends BasePage {
 
@@ -21,11 +23,11 @@ public class CreateCustomerPage extends BasePage {
     }
 
     public String getCreateCustomerPageTitle(){
-        return driver.findElement(getCreateCustomerPageTitle).getText();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(getCreateCustomerPageTitle)).getText();
     }
 
     public DashboardPage doCreateCustomer(String name,String company,String address,String city,String phone,String email){
-        driver.findElement(getCreateCustomerPageTitle).getText();
+
         driver.findElement(getName).sendKeys(name);
         driver.findElement(getCompany).sendKeys(company);
         driver.findElement(getAddress).sendKeys(address);
@@ -34,6 +36,20 @@ public class CreateCustomerPage extends BasePage {
         driver.findElement(getEmail).sendKeys(email);
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);",driver.findElement(getSubmitBtn));
         driver.findElement(getSubmitBtn).click();
+        return new DashboardPage(driver);
+
+    }
+
+    public DashboardPage doCreateCustomerPojo(CreateCustomer createCustomer){
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getName)).sendKeys(createCustomer.getName());
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getCompany)).sendKeys(createCustomer.getCompany());
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getAddress)).sendKeys(createCustomer.getAddress());
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getCity)).sendKeys(createCustomer.getCity());
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getPhone)).sendKeys(createCustomer.getPhone());
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getEmail)).sendKeys(createCustomer.getEmail());
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);",wait.until(ExpectedConditions.elementToBeClickable(getSubmitBtn)));
+        wait.until(ExpectedConditions.elementToBeClickable(getSubmitBtn)).click();
         return new DashboardPage(driver);
 
     }

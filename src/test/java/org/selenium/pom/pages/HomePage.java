@@ -2,6 +2,7 @@ package org.selenium.pom.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.selenium.pom.base.BasePage;
 
 public class HomePage extends BasePage {
@@ -20,28 +21,35 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
+    public HomePage load(){
+        load("/home/automation");
+        return this;
+    }
+
     public String getHomePageTitle(){
-        return driver.findElement(getPageTitle).getText();
+
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(getPageTitle)).getText();
     }
 
     public String getFormTitle(){
-        return driver.findElement(formTitle).getText();
+
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(formTitle)).getText();
     }
 
     public HomePage doFormSubmit(String name,String phone,String email,String password, String address){
 
-        driver.findElement(getName).sendKeys(name);
-        driver.findElement(getPhone).sendKeys(phone);
-        driver.findElement(getEmail).sendKeys(email);
-        driver.findElement(getPassword).sendKeys(password);
-        driver.findElement(getAddress).sendKeys(address);
-        driver.findElement(getSubmitBtn).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getName)).sendKeys(name);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getPhone)).sendKeys(phone);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getEmail)).sendKeys(email);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getPassword)).sendKeys(password);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getAddress)).sendKeys(address);
+        wait.until(ExpectedConditions.elementToBeClickable(getSubmitBtn)).click();
         return this;
 
     }
 
-    public LoginPage getLoginLink(){
-        driver.findElement(getLoginLink).click();
+    public LoginPage clickLoginLink(){
+        wait.until(ExpectedConditions.elementToBeClickable(getLoginLink)).click();
         return new LoginPage(driver);
     }
 }
