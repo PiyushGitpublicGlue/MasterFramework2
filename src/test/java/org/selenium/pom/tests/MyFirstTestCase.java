@@ -1,4 +1,4 @@
-package org.selenium;
+package org.selenium.pom.tests;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -21,7 +21,7 @@ public class MyFirstTestCase extends BaseTest {
     @Test
     public void fillForm() {
 
-        HomePage homePage = new HomePage(driver).load();
+        HomePage homePage = new HomePage(getDriver()).load();
         Assert.assertEquals(homePage.getHomePageTitle(), "Test automation practice form");
         Assert.assertEquals(homePage.getFormTitle(), "Textarea practice");
         homePage.doFormSubmit("Name1","0909090909","test@email.com","pwdtest","testaddress");
@@ -31,7 +31,7 @@ public class MyFirstTestCase extends BaseTest {
     @Test
     public void loginUsingExistingUser() throws IOException {
         UserLogin userLogin = JacksonUtils.deserializeJson("myUserLogin.json",UserLogin.class);
-        HomePage homePage = new HomePage(driver).load();
+        HomePage homePage = new HomePage(getDriver()).load();
         Assert.assertEquals(homePage.getHomePageTitle(), "Test automation practice form");
         LoginPage loginPage = homePage.clickLoginLink();
         DashboardPage dashboardPage = loginPage.doLogin(userLogin);
@@ -41,7 +41,7 @@ public class MyFirstTestCase extends BaseTest {
     public void loginUsingExistingUserAndCreateNewData() throws IOException {
         UserLogin userLogin = JacksonUtils.deserializeJson("myUserLogin.json",UserLogin.class);
         CreateCustomer createCustomer = JacksonUtils.deserializeJson("myCreateCustomer.json",CreateCustomer.class);
-        DashboardPage dashboardPage = new LoginPage(driver).load().doLogin(userLogin);
+        DashboardPage dashboardPage = new LoginPage(getDriver()).load().doLogin(userLogin);
         Assert.assertEquals(dashboardPage.getDashBoardPageTitle(),"Welcome testitera");
         CreateCustomerPage createCustomerPage = dashboardPage.clickCreateCustomerBtn();
         Assert.assertEquals(createCustomerPage.getCreateCustomerPageTitle(),"Create");
@@ -52,7 +52,7 @@ public class MyFirstTestCase extends BaseTest {
     @Test
         public void loginUsingExistingUserDeleteAllRecords() throws IOException {
         UserLogin userLogin = JacksonUtils.deserializeJson("myUserLogin.json",UserLogin.class);
-        DashboardPage dashboardPage = new LoginPage(driver).load().doLogin(userLogin);
+        DashboardPage dashboardPage = new LoginPage(getDriver()).load().doLogin(userLogin);
         Assert.assertEquals(dashboardPage.getDashBoardPageTitle(),"Welcome testitera");
         dashboardPage.clickOnDeleteAllRecords();
     }

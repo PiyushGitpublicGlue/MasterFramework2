@@ -1,4 +1,4 @@
-package org.selenium;
+package org.selenium.pom.tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 public class MyInitialOneFirstTestCase {
 
-    @Test
+    //@Test
     public void fillForm() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
         //WebDriverManager.firefoxdriver().setup();
@@ -31,7 +31,7 @@ public class MyInitialOneFirstTestCase {
 
     }
 
-    @Test
+    //@Test
     public void loginUsingExistingUser() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
         //WebDriverManager.firefoxdriver().setup();
@@ -49,7 +49,7 @@ public class MyInitialOneFirstTestCase {
         Assert.assertEquals(driver.findElement(By.xpath("//div//h3")).getText(),"Welcome testitera");
         driver.quit();
     }
-    @Test
+    //@Test
     public void loginUsingExistingUserAndCreateNewData() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
         //WebDriverManager.firefoxdriver().setup();

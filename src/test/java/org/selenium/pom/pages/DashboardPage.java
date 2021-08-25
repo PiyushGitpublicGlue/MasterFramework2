@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.selenium.pom.base.BasePage;
 
+import java.util.Collections;
 import java.util.List;
 
 public class DashboardPage extends BasePage {
@@ -46,6 +47,9 @@ public class DashboardPage extends BasePage {
     }
 
     private List<WebElement> getDeleteRowsList(){
+        if(driver.findElements(deleteItems).size()==0){
+            return Collections.emptyList();
+        }
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(deleteItems));
     }
 
@@ -56,14 +60,19 @@ public class DashboardPage extends BasePage {
     public void clickOnDeleteAllRecords(){
         int totalResultsToBeDeleted= getDeleteRowsList().size();
         int counter = 0;
-        while (getDeleteRowsList().size()!=0){
+        if(totalResultsToBeDeleted==0){
+            System.out.println("NOTHING TO BE DELETED");
+        }
+        else {
+            while (getDeleteRowsList().size() != 0) {
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(deleteItems)).click();
-            getDeletePageTitle();
-            wait.until(ExpectedConditions.elementToBeClickable(clickOnConfirmDelete)).click();
-            counter++;
-            if(counter==totalResultsToBeDeleted)break;
+                wait.until(ExpectedConditions.visibilityOfElementLocated(deleteItems)).click();
+                getDeletePageTitle();
+                wait.until(ExpectedConditions.elementToBeClickable(clickOnConfirmDelete)).click();
+                counter++;
+                if (counter == totalResultsToBeDeleted) break;
 
+            }
         }
 
 
