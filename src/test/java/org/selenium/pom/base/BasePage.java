@@ -2,6 +2,7 @@ package org.selenium.pom.base;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.selenium.pom.utils.ConfigLoader;
 
 import java.time.Duration;
 
@@ -16,6 +17,6 @@ public class BasePage {
     }
 
     protected void load(String endPoint){
-        driver.get("https://itera-qa.azurewebsites.net"+endPoint);
+        driver.get(ConfigLoader.getInstance().getBaseUrl()+endPoint);
     }
 }
